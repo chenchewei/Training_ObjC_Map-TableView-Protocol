@@ -14,6 +14,7 @@
 		6C97101224B887A500FD3C2D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C97101124B887A500FD3C2D /* Assets.xcassets */; };
 		6C97101524B887A500FD3C2D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C97101324B887A500FD3C2D /* LaunchScreen.storyboard */; };
 		6C97101824B887A500FD3C2D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C97101724B887A500FD3C2D /* main.m */; };
+		6C97102124B8931500FD3C2D /* stationTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C97102024B8931500FD3C2D /* stationTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,8 @@
 		6C97101424B887A500FD3C2D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6C97101624B887A500FD3C2D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6C97101724B887A500FD3C2D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6C97101F24B8931500FD3C2D /* stationTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stationTableViewController.h; sourceTree = "<group>"; };
+		6C97102024B8931500FD3C2D /* stationTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = stationTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +64,7 @@
 		6C97100424B8879400FD3C2D /* Training_ObjC_MapTableView */ = {
 			isa = PBXGroup;
 			children = (
+				6C97101E24B892D300FD3C2D /* TableViewVC */,
 				6C97100524B8879400FD3C2D /* AppDelegate.h */,
 				6C97100624B8879400FD3C2D /* AppDelegate.m */,
 				6C97100824B8879400FD3C2D /* SceneDelegate.h */,
@@ -74,6 +78,15 @@
 				6C97101724B887A500FD3C2D /* main.m */,
 			);
 			path = Training_ObjC_MapTableView;
+			sourceTree = "<group>";
+		};
+		6C97101E24B892D300FD3C2D /* TableViewVC */ = {
+			isa = PBXGroup;
+			children = (
+				6C97101F24B8931500FD3C2D /* stationTableViewController.h */,
+				6C97102024B8931500FD3C2D /* stationTableViewController.m */,
+			);
+			path = TableViewVC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,6 +161,7 @@
 			files = (
 				6C97100D24B8879400FD3C2D /* ViewController.m in Sources */,
 				6C97100724B8879400FD3C2D /* AppDelegate.m in Sources */,
+				6C97102124B8931500FD3C2D /* stationTableViewController.m in Sources */,
 				6C97101824B887A500FD3C2D /* main.m in Sources */,
 				6C97100A24B8879400FD3C2D /* SceneDelegate.m in Sources */,
 			);
