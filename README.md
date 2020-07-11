@@ -1,1 +1,1 @@
-# Training_ObjC_MapTableView
+# Just some simple codes for practicing
