@@ -1,1 +1,1 @@
-# Just some simple codes for practicing
+# Just some simple codes for practicing Objective C
