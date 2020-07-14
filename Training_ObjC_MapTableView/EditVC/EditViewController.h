@@ -10,13 +10,16 @@
 
 
 @protocol EditViewControllerDelegate <NSObject>
-@end
 
+-(void)updateDataWithMode:(int)mode;
+
+@end
 
 @interface EditViewController : UIViewController
 
 @property (weak ,nonatomic) id<EditViewControllerDelegate> delegate;
-- (void)setInitDataWithArr:(NSMutableArray<NSString *> *)name Address:(NSMutableArray<NSString *> *)addr number:(int)index;
+
+- (void)setInitDataWithArr:(NSMutableArray<NSString *> *)name Address:(NSMutableArray<NSString *> *)addr number:(int)index delegate:(id)delegate;
 
 @end
 

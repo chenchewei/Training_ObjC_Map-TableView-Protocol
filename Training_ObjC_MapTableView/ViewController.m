@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 #import "EditViewController.h"
 
-@interface ViewController ()<UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,EditViewControllerDelegate>
+@interface ViewController ()<UITableViewDelegate,UITableViewDataSource,EditViewControllerDelegate>
 
 /* 控制器上看得到的物件 */
 @property (strong,nonatomic) IBOutlet UITableView *stationTable;
@@ -22,10 +22,8 @@
 @property (strong, nonatomic) NSArray<NSArray<NSNumber *> *> *coordinatesArr;
 @property (strong, nonatomic) NSMutableArray<MKPointAnnotation *> *annotationArr;
 @property (assign, nonatomic) int number;
-    //return values
-//@property (assign,nonatomic) bool isReturned;
-//@property (strong, nonatomic) NSArray<NSString *> *returnedNameArr;
-//@property (strong, nonatomic) NSArray<NSString *> *returnedAddressArr;
+// Return flag
+@property (assign,nonatomic) bool isReturned;
 
 @end
 
@@ -35,23 +33,34 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self dataInit];
+    [self setAnnotation];
 }
 
 // Everytime back to this VC, reload everything
 -(void)viewWillAppear:(BOOL)animated {
-    [self setAnnotation];
-    [_stationTable reloadData];
+    [super viewWillAppear:animated];
+    if(_isReturned) {
+        [self deleteAllAnnotation];
+        [_stationTable reloadData];
+        [self setAnnotation];
+        _isReturned = false;
+    }
+    else{
+        NSLog(@"No data returned.");
+    }
+    
 }
 
 /* Initializing datas */
 -(void)dataInit {
-    _number = 0;
     _stationNameArr = @[@"南港",@"台北",@"板橋",@"桃園",@"新竹",@"苗栗",@"台中",@"彰化",@"雲林",@"嘉義",@"台南",@"左營"].mutableCopy;
     _stationAddressArr = @[@"台北市南港區南港路一段313號",@"台北市北平西路3號",@"新北市板橋區縣民大道二段7號",@"桃園市中壢區高鐵北路一段6號",@"新竹縣竹北市高鐵七路6號",@"苗栗縣後龍鎮高鐵三路268號",@"台中市烏日區站區二路8號",@"彰化縣田中鎮站區路二段99號",@"雲林縣虎尾鎮站前東路301號",@"嘉義縣太保市高鐵西路168號",@"台南市歸仁區歸仁大道100號",@"高雄市左營區高鐵路105號"].mutableCopy;
     _coordinatesArr = @[ @[@(25.053188323974609),@(121.60706329345703)], @[@(25.047670364379883),@(121.51698303222656)] , @[@(25.013870239257813),@(121.46459197998047)], @[@(25.012861251831055),@(121.21472930908203)], @[@(24.808441162109375),@(121.04026031494141)], @[@(24.605447769165039),@(120.82527160644531)], @[@(24.112483978271484),@(120.615966796875)], @[@(23.874326705932617),@(120.57460784912109)], @[@(23.736230850219727),@(120.41651153564453)], @[@(23.459506988525391),@(120.32325744628906)], @[@(22.925077438354492),@(120.28620147705078)], @[@(22.68739128112793),@(120.30748748779297)] ];
     _annotationArr = [NSMutableArray<MKPointAnnotation *> new];
     _stationTable.hidden = true;
-//    _isReturned = false;
+    _isReturned = false;
+    _stationTable.delegate = self;
+    _mapView.delegate = self;
 }
 
 -(void)setAnnotation {
@@ -64,6 +73,12 @@
         _annotationArr[i] = annotation;
     }
     [_mapView addAnnotations: _annotationArr];
+}
+
+- (void)deleteAllAnnotation {
+    NSMutableArray *allAnnotation =(NSMutableArray *) _mapView.annotations;
+    [_mapView removeAnnotations:allAnnotation];
+
 }
 
 #pragma mark - Main actions
@@ -80,15 +95,23 @@
             break;
         }
     }
-    UIStoryboard *storyboard=[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    EditViewController *editVC = [storyboard instantiateViewControllerWithIdentifier:@"EditViewController"];
+    
 
     UIAlertAction *nameAction = [UIAlertAction actionWithTitle:@"編輯" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
-        editVC.delegate = self;
-        [editVC setInitDataWithArr:_stationNameArr Address:_stationAddressArr number:_number];
-
-        [self deleteAllAnnotation];
+        UIStoryboard *storyboard=[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+        EditViewController *editVC = [storyboard instantiateViewControllerWithIdentifier:@"EditViewController"];
+        
+        [editVC setInitDataWithArr:self.stationNameArr Address:self.stationAddressArr number:self.number delegate:(id)self];
+        
+        
+        
+        
+        
+        
+        
+        
+        
         [self.navigationController pushViewController:editVC animated: true];
     }];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
@@ -96,23 +119,7 @@
     [alertViewController addAction:cancelAction];
     
     [self presentViewController:alertViewController animated:YES completion:nil];
-    
 }
-
-- (void)setInitDataWithArr:(NSArray<NSString *> *)name Address:(NSArray<NSString *> *)addr number:(int)index{
-    name = _stationNameArr;
-    addr = _stationAddressArr;
-    index = _number;
-    
-}
-
-/* Remove all annotation pins */
-- (void)deleteAllAnnotation {
-    NSMutableArray *allAnnotation =(NSMutableArray *) _mapView.annotations;
-    [_mapView removeAnnotations:allAnnotation];
-}
-
-
 
 
 #pragma mark - tableview setup
@@ -137,5 +144,12 @@
     printf("Clicked No. %d cell.\n",(int)indexPath.row);
     [_stationTable deselectRowAtIndexPath:indexPath animated:true];
 }
+#pragma mark - Protocol returned
+- (void)updateDataWithMode:(int)mode{
+    if(mode == 2){
+        _isReturned = true;
+    }
+}
+
 
 @end
