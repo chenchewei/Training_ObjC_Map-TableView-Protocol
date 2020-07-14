@@ -26,12 +26,10 @@
 @implementation EditViewController
 
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     _nameText.placeholder = _stationNameArr[_number];
     _addressText.placeholder = _stationAddressArr[_number];
-    
 
 }
 
@@ -41,7 +39,6 @@
     _number = index;
     _delegate = delegate;
 }
-
 
 - (IBAction)saveBtnClicked:(id)sender {
     if([_nameText.text isEqual: @""] || [_addressText.text isEqual: @""]) {

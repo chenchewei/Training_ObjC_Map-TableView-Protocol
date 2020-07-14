@@ -48,7 +48,6 @@
     else{
         NSLog(@"No data returned.");
     }
-    
 }
 
 /* Initializing datas */
@@ -78,14 +77,15 @@
 - (void)deleteAllAnnotation {
     NSMutableArray *allAnnotation =(NSMutableArray *) _mapView.annotations;
     [_mapView removeAnnotations:allAnnotation];
-
 }
 
 #pragma mark - Main actions
+
 // 切換 Map/TableView 顯示
 - (IBAction)switchBtnClicked:(UIButton *) switchingBtn{
     _stationTable.hidden = !_stationTable.hidden;
 }
+
 // Popup alert view
 -(void) mapView:(MKMapView *)_mapView didSelectAnnotationView:(MKAnnotationView *)view {
     UIAlertController *alertViewController = [UIAlertController alertControllerWithTitle:((void)(@"%@"),view.annotation.title) message:((void)(@"%@"),view.annotation.subtitle) preferredStyle:UIAlertControllerStyleAlert];
@@ -95,22 +95,12 @@
             break;
         }
     }
-    
-
     UIAlertAction *nameAction = [UIAlertAction actionWithTitle:@"編輯" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         
         UIStoryboard *storyboard=[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
         EditViewController *editVC = [storyboard instantiateViewControllerWithIdentifier:@"EditViewController"];
         
         [editVC setInitDataWithArr:self.stationNameArr Address:self.stationAddressArr number:self.number delegate:(id)self];
-        
-        
-        
-        
-        
-        
-        
-        
         
         [self.navigationController pushViewController:editVC animated: true];
     }];
@@ -120,7 +110,6 @@
     
     [self presentViewController:alertViewController animated:YES completion:nil];
 }
-
 
 #pragma mark - tableview setup
 -(NSInteger)tableView: (UITableView *) stationTable numberOfRowsInSection:(NSInteger)section {
@@ -144,12 +133,12 @@
     printf("Clicked No. %d cell.\n",(int)indexPath.row);
     [_stationTable deselectRowAtIndexPath:indexPath animated:true];
 }
-#pragma mark - Protocol returned
+
+#pragma mark - Protocol data returned from EditVC
 - (void)updateDataWithMode:(int)mode{
     if(mode == 2){
         _isReturned = true;
     }
 }
-
 
 @end
